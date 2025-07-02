@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Assistente Prefeitura</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Assistente Virtual da Prefeitura</h1>
+
+    <textarea id="pergunta" placeholder="Digite sua dúvida..."></textarea>
+    <button onclick="enviarPergunta()">Enviar Pergunta</button>
+
+    <hr>
+
+    <input type="file" id="imagemInput">
+    <input type="text" id="promptImagem" placeholder="Descreva o que deseja saber da imagem">
+    <button onclick="enviarImagem()">Enviar Imagem</button>
+
+    <div id="resposta"></div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
