@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Assistente Prefeitura</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <img src="img.jpg" alt="img_lagoa" class="img_topo">
+  <div class="container">
+    <h1>
+  <img src="LIA.png" alt="Ícone da LIA" class="icon-lia">
+  Assistente LIA
+  </h1>
+
+  <p style="font-size: 1.1em; color: #333;">Tire suas <strong>dúvidas</strong> com nossa assistente virtual!</p>
+
+
+    <textarea id="pergunta" placeholder="Digite sua dúvida..."></textarea>
+    <button onclick="enviarPergunta()">Enviar Pergunta</button>
+
+    <hr>
+
+    <input type="file" id="imagemInput">
+    <input type="text" id="promptImagem" placeholder="Descreva o que deseja saber da imagem">
+    <button onclick="enviarImagem()">Enviar Imagem</button>
+
+    <div id="resposta"></div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
