@@ -30,4 +30,58 @@ faq = {
     "como tirar segunda via do iptu?": "No site da prefeitura ou no setor de tributos.",
     "qual o telefone da prefeitura?": "(86) 99999-9999.",
     "como agendar atendimento?": "Acesse o site ou ligue para a recepção da prefeitura.",
-    "onde fica a secretar
+    "onde fica a secretaria de saúde?": "Rua Central, nº 123, ao lado do posto de saúde.",
+    "tem concurso aberto?": "Consulte o site oficial da prefeitura para editais e prazos.",
+    "quem é o prefeito atual?": "A prefeita atual é Rejane Barros.",
+    "onde fica a câmara municipal?": "Na Rua Principal, próximo à praça central.",
+}
+
+# Página principal
+@app.route("/")
+def homepage():
+    return send_from_directory(app.static_folder, "index.html")
+
+# Servir arquivos estáticos (style.css, script.js, imagens, etc.)
+@app.route('/<path:path>')
+def static_files(path):
+    return send_from_directory(app.static_folder, path)
+
+# Rota de pergunta por texto
+@app.route("/api/pergunta", methods=["POST"])
+def responder_texto():
+    data = request.get_json()
+    pergunta = data.get("pergunta", "").lower().strip()
+
+    if pergunta in faq:
+        return jsonify({"resposta": f"LIA responde: {faq[pergunta]}"})
+
+    try:
+        contexto = (
+            "Você é LIA, a assistente virtual oficial da Prefeitura Municipal de Lagoa do Piauí. "
+            "Responda como uma funcionária pública, com informações objetivas, educadas e focadas nos serviços municipais."
+        )
+        prompt_completo = contexto + "\n\nUsuário perguntou: " + pergunta
+        resposta = modelo_texto.generate_content(prompt_completo)
+        return jsonify({"resposta": f"LIA responde:\n{resposta.text}"})
+    except Exception as e:
+        return jsonify({"resposta": f"LIA encontrou um erro: {str(e)}"}), 500
+
+# Rota de imagem
+@app.route("/api/imagem", methods=["POST"])
+def responder_imagem():
+    data = request.get_json()
+    imagem_base64 = data.get("imagem")
+    prompt = data.get("prompt", "Descreva esta imagem.")
+
+    try:
+        image_bytes = base64.b64decode(imagem_base64)
+        image = Image.open(io.BytesIO(image_bytes))
+        resposta = modelo_imagem.generate_content([prompt, image])
+        return jsonify({"resposta": f"LIA analisou a imagem:\n{resposta.text}"})
+    except Exception as e:
+        return jsonify({"resposta": f"LIA encontrou um erro ao analisar a imagem: {str(e)}"}), 500
+
+# Iniciar servidor no Render
+if __name__ == "__main__":
+    from waitress import serve
+    serve(app, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
