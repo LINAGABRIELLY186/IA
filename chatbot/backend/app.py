@@ -80,6 +80,12 @@ def responder_imagem():
         return jsonify({"resposta": f"LIA analisou a imagem:\n{resposta.text}"})
     except Exception as e:
         return jsonify({"resposta": f"LIA encontrou um erro ao analisar a imagem: {str(e)}"}), 500
+from flask import send_from_directory
+
+# Servir o index.html da LIA
+@app.route("/")
+def homepage():
+    return send_from_directory("static", "index.html")
 
 # Iniciar o servidor
 if __name__ == "__main__":
