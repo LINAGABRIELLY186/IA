@@ -3,11 +3,12 @@ async function enviarPergunta() {
   const respostaDiv = document.getElementById("resposta");
   respostaDiv.innerText = "Carregando...";
 
-  const response = await fetch("http://localhost:5000/api/pergunta", {
+  const response = await fetch("https://assistente-lia.onrender.com/api/pergunta", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ pergunta })
   });
+
 
   const data = await response.json();
   respostaDiv.innerText = data.resposta;
@@ -21,11 +22,12 @@ async function enviarImagem() {
   reader.onloadend = async function () {
     const base64 = reader.result.split(',')[1];
 
-    const response = await fetch("http://localhost:5000/api/imagem", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ imagem: base64, prompt })
-    });
+    const response = await fetch("https://assistente-lia.onrender.com/api/imagem", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ imagem: base64, prompt })
+  });
+
 
     const data = await response.json();
     document.getElementById("resposta").innerText = data.resposta;
