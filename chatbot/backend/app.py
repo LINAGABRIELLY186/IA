@@ -80,12 +80,19 @@ def responder_imagem():
         return jsonify({"resposta": f"LIA analisou a imagem:\n{resposta.text}"})
     except Exception as e:
         return jsonify({"resposta": f"LIA encontrou um erro ao analisar a imagem: {str(e)}"}), 500
-from flask import send_from_directory
+from flask import Flask, send_from_directory
 
-# Servir o index.html da LIA
+app = Flask(__name__, static_folder="static")
+
 @app.route("/")
 def homepage():
-    return send_from_directory("static", "index.html")
+    return send_from_directory(app.static_folder, "index.html")
+
+# Se quiser garantir que todos arquivos estáticos podem ser acessados (não é obrigatório):
+@app.route('/<path:path>')
+def static_files(path):
+    return send_from_directory(app.static_folder, path)
+
 
 if __name__ == "__main__":
     from waitress import serve
