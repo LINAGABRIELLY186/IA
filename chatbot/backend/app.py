@@ -22,7 +22,7 @@ genai.configure(api_key=API_KEY)
 app = Flask(__name__)
 
 # Liberar acesso ao frontend (HTML local via Live Server)
-CORS(app, resources={r"/api/*": {"origins": "http://127.0.0.1:5500"}})
+CORS(app, resources={r"/api/*": {"origins": "https://assistente-lia.onrender.com"}})
 
 # Modelos do Gemini
 modelo_texto = genai.GenerativeModel("models/gemini-1.5-flash")
